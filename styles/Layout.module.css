@@ -9,8 +9,14 @@
 }
 
 .main {
-  padding: 5rem 0;
+  /* padding: 5rem 0; */
   flex: 1;
+
+  /* width: 50%; */
+  width: 100%;
+  /* for mobile, snap to 300px, not smaller than that */
+  min-width: 300px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
