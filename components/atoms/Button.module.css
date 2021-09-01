@@ -1,0 +1,68 @@
+.button {
+    outline: none;
+    border: none;
+  
+    border-radius: 5px;
+
+    cursor: pointer;
+  
+    display: flex;
+    flex-direction:  row;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+}
+
+/* button icon - icon and label */
+.button span {
+    margin-left: 0.5rem;
+}
+
+.small {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+}
+
+.medium {
+    padding: 20px 30px;
+    font-size: 1rem;
+}
+
+.large {
+    padding: 25px 45px;
+    font-size: 1.5rem;
+}
+
+.x-large {
+    padding: 30px 40px;
+    font-size: 2rem;
+}
+
+
+.success {
+    background-color: #008000;
+    color: #FFFFFF;
+}
+  
+.success:hover {
+    background-color: #00d300;
+}
+
+.primary {
+    background-color: #003296;
+    color: #FFFFFF;
+}
+
+.primary:hover {
+    background-color: #0055ff;
+}
+
+.secondary {
+    background-color: #808080;
+    color: #FFFFFF;
+}
+
+.secondary:hover {
+    background-color: #464646;
+}

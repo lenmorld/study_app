@@ -1,0 +1,80 @@
+
+requirements
+====
+2 main pages:
+
+1. add questions
+2. answer questions
+
+add questions
+- question input
+- answer input
+- tags
+
+answer questions
+- question list: shown one at a time
+- filter by tags
+- toggle a question to answered
+- button to answer a question
+- button to show answer
+- increment score
+- show total score
+
+
+later:
+- multiple choice
+- true/false
+
+====
+State:
+{
+    questions: [
+        {
+            id: 1,
+            text: "what is love?",
+            type: "open",
+            answer: "Baby don't hurt me"
+            tags: ["js", "react"]
+        },
+        {
+            id: 2,
+            text: "what is love?",
+            type: "true_false",
+            answer: true,
+            tags: ["react"]
+        },
+        {
+            id: 3,
+            text: "what is love?",
+            type: "multiple",
+            answer: 1,
+            options: [
+                { id: 1, text: "Baby" },
+                { id: 2, text: "Dont" },
+                { id: 2, text: "Hurt" },
+            ],
+            tags: ["js"]
+        },
+    ],
+    // filter by ...
+    filter: {
+        tag: "js"
+    }
+    // does this have to be in Redux state?
+    viewer: {
+        current: 1,         // current question in view
+        score: 1,           // number of correct answers
+        finished: false     // whether deck is finished
+    },
+
+}
+
+===
+Actions
+
+{ type: 'questions/add', payload: { text, type, answer, options, tags } }
+{ type: 'questions/edit', payload: { text, type, answer, options, tags } }
+// optionally, separate into 'editQuestion', 'editTags', etc
+
+{ type: 'filters/tag', payload: { tag }  }
+// TODO: 'filters/tags'
