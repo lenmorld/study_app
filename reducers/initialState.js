@@ -1,21 +1,21 @@
 export const initialQuestionsState = [
   {
     id: 1,
-    text: "what is love?",
+    question: "what is the meaning of life",
     type: "open",
-    answer: "Baby don't hurt me",
+    answer: "42",
     tags: ["js", "react"],
   },
   {
     id: 2,
-    text: "what is love?",
+    question: "is it love?",
     type: "true_false",
     answer: true,
     tags: ["react"],
   },
   {
     id: 3,
-    text: "what is love?",
+    question: "what is love?",
     type: "multiple",
     answer: 1,
     options: [
