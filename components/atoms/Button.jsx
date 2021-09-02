@@ -10,6 +10,8 @@ export default function Button({
   size = "medium",
   className,
   style,
+  icon: Icon, // ignores chilren
+  text, // ignores chilren
 }) {
   const customStyles = []
 
@@ -40,7 +42,14 @@ export default function Button({
       className={`${styles.button} ${customStyles.join(" ")}`}
       style={style}
     >
-      {children}
+      {Icon && (
+        <span>
+          <Icon />
+        </span>
+      )}
+      {text && <span>{text}</span>}
+
+      {!Icon && !text && children}
     </button>
   )
 }

@@ -115,29 +115,18 @@ export default function CardForm() {
             onClick={handlePreview}
             primary
             style={{ margin: "1rem" }}
-          >
-            {isPreview ? (
-              <>
-                <AiOutlineEdit />
-                <span>Edit</span>
-              </>
-            ) : (
-              <>
-                <AiOutlineEye />
-                <span>Preview</span>
-              </>
-            )}
-          </Button>
+            icon={isPreview ? AiOutlineEdit : AiOutlineEye}
+            text={isPreview ? "Edit" : "Preview"}
+          />
 
           <Button
             className={styles.button}
             onClick={handleSubmit}
             success
             style={{ margin: "1rem" }}
-          >
-            <AiOutlineSave />
-            <span>Save</span>
-          </Button>
+            icon={AiOutlineSave}
+            text="Save"
+          />
         </div>
       </form>
     </div>
