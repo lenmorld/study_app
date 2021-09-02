@@ -21,7 +21,7 @@ export const initialQuestionsState = [
     options: [
       { id: 1, text: "Baby" },
       { id: 2, text: "Dont" },
-      { id: 2, text: "Hurt" },
+      { id: 3, text: "Hurt" },
     ],
     tags: ["js"],
   },
@@ -55,7 +55,7 @@ export const initialFiltersState = {
             options: [
                 { id: 1, text: "Baby" },
                 { id: 2, text: "Dont" },
-                { id: 2, text: "Hurt" },
+                { id: 3, text: "Hurt" },
             ],
             tags: ["js"]
         },

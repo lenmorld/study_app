@@ -66,3 +66,15 @@
 .secondary:hover {
     background-color: #464646;
 }
+
+.flat {
+    background-color: transparent;
+    color: #000000;
+    border: 1px solid rgba(0, 0, 0, 0.5)
+}
+
+.flat:hover {
+    background-color: #000000;
+    color: #ffffff
+}
+

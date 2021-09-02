@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useCallback, useState } from "react"
 import {
   AiOutlineQuestionCircle,
   AiOutlineCheckCircle,
   AiOutlineEye,
+  AiOutlineEyeInvisible,
 } from "react-icons/ai"
 
 import { useSelector } from "react-redux"
 import { useRouter } from "next/router"
+
+import {
+  QUESTION_OPEN,
+  QUESTION_MULTIPLE_CHOICE,
+  QUESTION_TRUE_FALSE,
+} from "../constants/questionTypes"
 
 import Button from "./atoms/Button"
 
@@ -26,6 +33,7 @@ export default function Viewer() {
 
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
+  const [answerVisible, setAnswerVisible] = useState(false)
 
   // NO NEED if preloaded by reducer
   // fetch questions on page load
@@ -33,7 +41,10 @@ export default function Viewer() {
   //   //
   // }, [])
 
-  const handleSubmitAnswer = () => {
+  const handleSubmitAnswer = useCallback(() => {
+    // reset show/hide answer
+    setAnswerVisible(false)
+
     setCurrentCardIndex((currentIndex) => {
       if (currentIndex >= questions.length - 1) {
         // rotate
@@ -43,19 +54,105 @@ export default function Viewer() {
 
       return currentIndex + 1
     })
-  }
+  }, [questions, router])
 
-  const handleSubmitAnswerCorrect = () => {
+  const handleSubmitAnswerCorrect = useCallback(() => {
     setCurrentScore((score) => score + 1)
     handleSubmitAnswer()
-  }
+  }, [handleSubmitAnswer])
 
-  const handleSubmitAnswerWrong = () => {
+  const handleSubmitAnswerWrong = useCallback(() => {
     // setCurrentScore((score) => score - 1)
     handleSubmitAnswer()
+  }, [handleSubmitAnswer])
+
+  const handleReveal = () => {
+    setAnswerVisible(true)
   }
 
   const currentCard = questions[currentCardIndex]
+
+  // ## different question types rendering
+
+  const OpenQuestionView = useCallback(() => {
+    return (
+      <>
+        <div className={styles.answers}>
+          {answerVisible && <p className={styles.p}>{currentCard.answer}</p>}
+        </div>
+
+        <div className={styles.controls}>
+          {!answerVisible && (
+            <Button
+              primary
+              onClick={handleReveal}
+              icon={AiOutlineEye}
+              text="Show answer"
+            />
+          )}
+          {answerVisible && (
+            <>
+              <Button
+                secondary
+                onClick={handleSubmitAnswerWrong}
+                style={{ margin: "1rem" }}
+                icon={AiOutlineQuestionCircle}
+                text="I didn't know that!"
+              />
+
+              <Button
+                type="button"
+                success
+                onClick={handleSubmitAnswerCorrect}
+                style={{ margin: "1rem" }}
+                icon={AiOutlineCheckCircle}
+                text="I knew it!"
+              />
+            </>
+          )}
+        </div>
+      </>
+    )
+  }, [
+    answerVisible,
+    currentCard,
+    handleSubmitAnswerWrong,
+    handleSubmitAnswerCorrect,
+  ])
+
+  const TrueFalseView = useCallback(() => {
+    return (
+      <>
+        <div className={styles.options}>
+          <Button flat onClick={handleSubmitAnswerWrong}>
+            True
+          </Button>
+          <Button flat onClick={handleSubmitAnswerCorrect}>
+            False
+          </Button>
+        </div>
+        {/* <div className={styles.controls}>
+          <Button>Submit</Button>
+        </div> */}
+      </>
+    )
+  }, [handleSubmitAnswerWrong, handleSubmitAnswerCorrect])
+
+  const MultipleChoiceView = useCallback(() => {
+    if (!currentCard?.options?.length) {
+      return null
+    }
+
+    return (
+      <div className={styles.optionsFullWidth}>
+        {currentCard.options.map((option) => (
+          <Button key={option.id} flat onClick={handleSubmitAnswerCorrect}>
+            {option.text}
+          </Button>
+        ))}
+      </div>
+    )
+  }, [currentCard, handleSubmitAnswerCorrect])
 
   if (!currentCard) {
     return null
@@ -76,30 +173,9 @@ export default function Viewer() {
         <h1>{currentCard.question}</h1>
       </div>
 
-      <div className={styles.controls}>
-        <Button
-          secondary
-          onClick={handleSubmitAnswerWrong}
-          style={{ margin: "1rem" }}
-        >
-          <span>
-            <AiOutlineQuestionCircle />
-          </span>
-          <span>I didn't know that!</span>
-        </Button>
-
-        <Button
-          type="button"
-          success
-          onClick={handleSubmitAnswerCorrect}
-          style={{ margin: "1rem" }}
-        >
-          <span>
-            <AiOutlineCheckCircle />
-          </span>
-          <span>I knew it!</span>
-        </Button>
-      </div>
+      {currentCard.type === QUESTION_OPEN && OpenQuestionView()}
+      {currentCard.type === QUESTION_TRUE_FALSE && TrueFalseView()}
+      {currentCard.type === QUESTION_MULTIPLE_CHOICE && MultipleChoiceView()}
     </div>
   )
 }

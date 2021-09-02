@@ -1,5 +1,6 @@
 .card {
-  width: 50%;
+  /* width: 50%; */
+  min-width: 50%;
 
   background: white;
 
@@ -56,11 +57,26 @@
 }
 
 .controls {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
+
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
 }
 
+.options {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
 
+.optionsFullWidth {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
 
