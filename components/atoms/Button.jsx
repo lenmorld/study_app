@@ -7,6 +7,7 @@ export default function Button({
   primary,
   secondary,
   success,
+  flat,
   size = "medium",
   className,
   style,
@@ -27,13 +28,17 @@ export default function Button({
     customStyles.push(styles.secondary)
   }
 
+  if (flat) {
+    customStyles.push(styles.flat)
+  }
+
   if (success) {
     customStyles.push(styles.success)
   }
 
   customStyles.push(styles[size])
 
-  console.log(customStyles)
+  // console.log(customStyles)
 
   return (
     <button
