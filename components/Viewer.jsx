@@ -39,6 +39,7 @@ export default function Viewer() {
   const [trueFalseSelected, setTrueFalseSelected] = useState(null)
 
   // const [selectedOptions, setSelectedOptions] = useState([])
+  const [selectedOption, setSelectedOption] = useState(null)
 
   const currentCard = questions[currentCardIndex]
 
@@ -91,7 +92,7 @@ export default function Viewer() {
         // just toggle previous answer
         setTrueFalseSelected(e.target.id)
       } else if (currentCard.type === QUESTION_MULTIPLE_CHOICE) {
-        // setSelectedOptions([e.target.id])
+        setSelectedOption(e.target.id)
       }
     },
     [setTrueFalseSelected, currentCard.type],
@@ -186,16 +187,35 @@ export default function Viewer() {
       return null
     }
 
+    // console.log("selectedOption: ", selectedOption, currentCard.options)
     return (
       <div className={styles.optionsFullWidth}>
+        {/* options */}
         {currentCard.options.map((option) => (
-          <Button key={option.id} flat onClick={handleSubmitAnswerCorrect}>
+          <Button
+            key={option.id}
+            id={option.id}
+            flat
+            onClick={handleChooseOption}
+            selected={selectedOption === option.id}
+          >
             {option.text}
           </Button>
         ))}
+        {/* submit button */}
+        {selectedOption && (
+          <>
+            <Spacer />
+            <div className={styles.controls}>
+              <Button primary onClick={handleSubmitAnswer}>
+                Submit
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     )
-  }, [currentCard, handleSubmitAnswerCorrect])
+  }, [currentCard, selectedOption, handleChooseOption, handleSubmitAnswer])
 
   if (!currentCard) {
     return null
