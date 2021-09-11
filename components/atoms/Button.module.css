@@ -74,7 +74,12 @@
 }
 
 .flat:hover {
-    background-color: #000000;
+    background-color: #747474;
     color: #ffffff
 }
 
+
+.selected {
+    background-color: #000000;
+    color: #ffffff
+}
