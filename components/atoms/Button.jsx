@@ -13,6 +13,8 @@ export default function Button({
   style,
   icon: Icon, // ignores chilren
   text, // ignores chilren
+  selected,
+  ...otherProps
 }) {
   const customStyles = []
 
@@ -32,6 +34,10 @@ export default function Button({
     customStyles.push(styles.flat)
   }
 
+  if (selected) {
+    customStyles.push(styles.selected)
+  }
+
   if (success) {
     customStyles.push(styles.success)
   }
@@ -46,6 +52,7 @@ export default function Button({
       onClick={onClick}
       className={`${styles.button} ${customStyles.join(" ")}`}
       style={style}
+      {...otherProps}
     >
       {Icon && (
         <span>

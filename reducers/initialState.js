@@ -19,9 +19,9 @@ export const initialQuestionsState = [
     type: "multiple",
     answer: 1,
     options: [
-      { id: 1, text: "Baby" },
-      { id: 2, text: "Dont" },
-      { id: 3, text: "Hurt" },
+      { id: "a", text: "Baby" },
+      { id: "b", text: "Dont" },
+      { id: "c", text: "Hurt" },
     ],
     tags: ["js"],
   },
