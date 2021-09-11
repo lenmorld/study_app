@@ -16,6 +16,7 @@ import {
 } from "../constants/questionTypes"
 
 import Button from "./atoms/Button"
+import Spacer from "./atoms/Spacer"
 
 import styles from "./Viewer.module.css"
 
@@ -29,11 +30,17 @@ export default function Viewer() {
   const router = useRouter()
 
   const questions = useSelector(selectQuestions)
-  console.log(questions)
+  // console.log(questions)
 
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
   const [answerVisible, setAnswerVisible] = useState(false)
+
+  const [trueFalseSelected, setTrueFalseSelected] = useState(null)
+
+  // const [selectedOptions, setSelectedOptions] = useState([])
+
+  const currentCard = questions[currentCardIndex]
 
   // NO NEED if preloaded by reducer
   // fetch questions on page load
@@ -42,6 +49,11 @@ export default function Viewer() {
   // }, [])
 
   const handleSubmitAnswer = useCallback(() => {
+    // TODO: determine if answer correct/wrong
+    // and update score
+    // Replace handleSubmitAnswerCorrect and handleSubmitAnswerWrong
+    // with reusable logic for all question types
+
     // reset show/hide answer
     setAnswerVisible(false)
 
@@ -70,7 +82,20 @@ export default function Viewer() {
     setAnswerVisible(true)
   }
 
-  const currentCard = questions[currentCardIndex]
+  const handleChooseOption = useCallback(
+    (e) => {
+      console.log(e.target.id)
+
+      if (currentCard.type === QUESTION_TRUE_FALSE) {
+        // for true/false, only one answer allowed
+        // just toggle previous answer
+        setTrueFalseSelected(e.target.id)
+      } else if (currentCard.type === QUESTION_MULTIPLE_CHOICE) {
+        // setSelectedOptions([e.target.id])
+      }
+    },
+    [setTrueFalseSelected, currentCard.type],
+  )
 
   // ## different question types rendering
 
@@ -121,22 +146,40 @@ export default function Viewer() {
   ])
 
   const TrueFalseView = useCallback(() => {
+    // console.log("trueFalseSelected: ", trueFalseSelected)
     return (
       <>
         <div className={styles.options}>
-          <Button flat onClick={handleSubmitAnswerWrong}>
+          <Button
+            flat
+            onClick={handleChooseOption}
+            id="true"
+            selected={trueFalseSelected === "true"}
+          >
             True
           </Button>
-          <Button flat onClick={handleSubmitAnswerCorrect}>
+          <Button
+            flat
+            onClick={handleChooseOption}
+            id="false"
+            selected={trueFalseSelected === "false"}
+          >
             False
           </Button>
         </div>
-        {/* <div className={styles.controls}>
-          <Button>Submit</Button>
-        </div> */}
+        {trueFalseSelected && (
+          <>
+            <Spacer />
+            <div className={styles.controls}>
+              <Button primary onClick={handleSubmitAnswer}>
+                Submit
+              </Button>
+            </div>
+          </>
+        )}
       </>
     )
-  }, [handleSubmitAnswerWrong, handleSubmitAnswerCorrect])
+  }, [handleChooseOption, trueFalseSelected, handleSubmitAnswer])
 
   const MultipleChoiceView = useCallback(() => {
     if (!currentCard?.options?.length) {
