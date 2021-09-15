@@ -39,7 +39,9 @@ export default function Viewer() {
 
   const [trueFalseSelected, setTrueFalseSelected] = useState(null)
 
-  // const [selectedOptions, setSelectedOptions] = useState([])
+  // use for Multiple choice that allows multiple answers
+  const [selectedOptions, setSelectedOptions] = useState({})
+
   const [selectedOption, setSelectedOption] = useState(null)
 
   const currentCard = questions[currentCardIndex]
@@ -94,9 +96,16 @@ export default function Viewer() {
         setTrueFalseSelected(e.target.id)
       } else if (currentCard.type === QUESTION_MULTIPLE_CHOICE) {
         setSelectedOption(e.target.id)
+      } else if (currentCard.type === QUESTION_MULTIPLE_CHOICE_MULTI_ANSWER) {
+        setSelectedOptions((prevSelected) => {
+          return {
+            ...prevSelected,
+            [e.target.id]: e.target.id,
+          }
+        })
       }
     },
-    [setTrueFalseSelected, currentCard.type],
+    [setTrueFalseSelected, currentCard],
   )
 
   // ## different question types rendering
@@ -188,23 +197,33 @@ export default function Viewer() {
       return null
     }
 
+    const hasMultiAnswers = currentCard?.answers?.length
+
     // console.log("selectedOption: ", selectedOption, currentCard.options)
     return (
-      <div className={styles.optionsFullWidth}>
-        {/* options */}
-        {currentCard.options.map((option) => (
-          <Button
-            key={option.id}
-            id={option.id}
-            flat
-            onClick={handleChooseOption}
-            selected={selectedOption === option.id}
-          >
-            {option.text}
-          </Button>
-        ))}
+      <>
+        <div className={styles.optionsFullWidth}>
+          {/* options */}
+          {currentCard.options.map((option) => (
+            <Button
+              key={option.id}
+              id={option.id}
+              flat
+              onClick={handleChooseOption}
+              selected={
+                hasMultiAnswers
+                  ? Object.keys(selectedOptions).includes(option.id)
+                  : selectedOption === option.id
+              }
+            >
+              {option.text}
+            </Button>
+          ))}
+        </div>
         {/* submit button */}
-        {selectedOption && (
+        {(hasMultiAnswers
+          ? Object.keys(selectedOptions).length
+          : selectedOption) && (
           <>
             <Spacer />
             <div className={styles.controls}>
@@ -214,9 +233,15 @@ export default function Viewer() {
             </div>
           </>
         )}
-      </div>
+      </>
     )
-  }, [currentCard, selectedOption, handleChooseOption, handleSubmitAnswer])
+  }, [
+    currentCard,
+    selectedOption,
+    selectedOptions,
+    handleChooseOption,
+    handleSubmitAnswer,
+  ])
 
   if (!currentCard) {
     return null
@@ -240,6 +265,8 @@ export default function Viewer() {
       {currentCard.type === QUESTION_OPEN && OpenQuestionView()}
       {currentCard.type === QUESTION_TRUE_FALSE && TrueFalseView()}
       {currentCard.type === QUESTION_MULTIPLE_CHOICE && MultipleChoiceView()}
+      {currentCard.type === QUESTION_MULTIPLE_CHOICE_MULTI_ANSWER &&
+        MultipleChoiceView()}
     </div>
   )
 }
