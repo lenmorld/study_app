@@ -70,6 +70,10 @@ export default function Viewer() {
 
       return currentIndex + 1
     })
+
+    // clear answers states
+    setSelectedOption(null)
+    setSelectedOptions({})
   }, [questions, router])
 
   const handleSubmitAnswerCorrect = useCallback(() => {
