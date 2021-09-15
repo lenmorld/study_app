@@ -25,6 +25,19 @@ export const initialQuestionsState = [
     ],
     tags: ["js"],
   },
+  {
+    id: 4,
+    question: "Programming languages used for the web?",
+    type: "multiple_multi_answer",
+    answers: ["a", "b"],
+    options: [
+      { id: "a", text: "Javascript" },
+      { id: "b", text: "HTML" },
+      { id: "c", text: "COBOL" },
+      { id: "d", text: "Assembly" },
+    ],
+    tags: ["js"],
+  },
 ]
 
 export const initialFiltersState = {
