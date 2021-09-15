@@ -226,7 +226,7 @@ export default function Viewer() {
         </div>
         {/* submit button */}
         {(hasMultiAnswers
-          ? Object.keys(selectedOptions).length
+          ? !!Object.keys(selectedOptions).length
           : selectedOption) && (
           <>
             <Spacer />
