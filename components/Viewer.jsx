@@ -13,6 +13,7 @@ import {
   QUESTION_OPEN,
   QUESTION_MULTIPLE_CHOICE,
   QUESTION_TRUE_FALSE,
+  QUESTION_MULTIPLE_CHOICE_MULTI_ANSWER,
 } from "../constants/questionTypes"
 
 import Button from "./atoms/Button"
