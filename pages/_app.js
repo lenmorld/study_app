@@ -1,6 +1,7 @@
 import React from "react"
 import { Provider } from "react-redux"
 import Layout from "../components/Layout"
+import Auth from "../components/Auth"
 
 import "../styles/globals.css"
 
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }) {
     <React.StrictMode>
       <Provider store={store}>
         <Layout>
-          <Component {...pageProps} />
+          <Auth>
+            <Component {...pageProps} />
+          </Auth>
         </Layout>
       </Provider>
     </React.StrictMode>
