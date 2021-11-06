@@ -1,9 +1,8 @@
-import React, { useEffect, useCallback, useState } from "react"
+import React, { useCallback, useState } from "react"
 import {
   AiOutlineQuestionCircle,
   AiOutlineCheckCircle,
   AiOutlineEye,
-  AiOutlineEyeInvisible,
 } from "react-icons/ai"
 
 import { useSelector } from "react-redux"
@@ -52,39 +51,78 @@ export default function Viewer() {
   //   //
   // }, [])
 
-  const handleSubmitAnswer = useCallback(() => {
-    // TODO: determine if answer correct/wrong
-    // and update score
-    // Replace handleSubmitAnswerCorrect and handleSubmitAnswerWrong
-    // with reusable logic for all question types
+  const handleSubmitAnswer = useCallback(
+    (e) => {
+      let currentCardScore = 0
 
-    // reset show/hide answer
-    setAnswerVisible(false)
+      // evaluate answer based on type
+      switch (currentCard.type) {
+        case QUESTION_OPEN: {
+          currentCardScore += Number(e.target.id === "correct")
+          break
+        }
 
-    setCurrentCardIndex((currentIndex) => {
-      if (currentIndex >= questions.length - 1) {
-        // rotate
-        // return 0
-        router.push("/")
+        case QUESTION_TRUE_FALSE: {
+          const selectedTrueFalseAnswer = trueFalseSelected === "true"
+          currentCardScore += Number(
+            selectedTrueFalseAnswer === currentCard.answer,
+          )
+          break
+        }
+        case QUESTION_MULTIPLE_CHOICE: {
+          currentCardScore += Number(selectedOption === currentCard.answer)
+          break
+        }
+
+        case QUESTION_MULTIPLE_CHOICE_MULTI_ANSWER: {
+          currentCardScore += Number(
+            currentCard.answers.every((option) => selectedOptions[option]) &&
+              currentCard.answers.length ===
+                Object.keys(selectedOptions).length,
+          )
+          break
+        }
+
+        default: {
+          // do nothing?
+        }
       }
 
-      return currentIndex + 1
-    })
+      // update score based on score obtained from current card
+      if (currentCardScore) {
+        setCurrentScore(
+          (_prevCurrentScore) => _prevCurrentScore + currentCardScore,
+        )
+      }
 
-    // clear answers states
-    setSelectedOption(null)
-    setSelectedOptions({})
-  }, [questions, router])
+      // reset show/hide answer
+      setAnswerVisible(false)
 
-  const handleSubmitAnswerCorrect = useCallback(() => {
-    setCurrentScore((score) => score + 1)
-    handleSubmitAnswer()
-  }, [handleSubmitAnswer])
+      // show next question
+      setCurrentCardIndex((currentIndex) => {
+        if (currentIndex >= questions.length - 1) {
+          console.log("currentScore: ", currentScore)
+          // end it
+          router.push("/")
+        }
 
-  const handleSubmitAnswerWrong = useCallback(() => {
-    // setCurrentScore((score) => score - 1)
-    handleSubmitAnswer()
-  }, [handleSubmitAnswer])
+        return currentIndex + 1
+      })
+
+      // clear answers states
+      setSelectedOption(null)
+      setSelectedOptions({})
+    },
+    [
+      questions,
+      // router,
+      currentCard,
+      selectedOption,
+      selectedOptions,
+      trueFalseSelected,
+      currentScore,
+    ],
+  )
 
   const handleReveal = () => {
     setAnswerVisible(true)
@@ -92,7 +130,7 @@ export default function Viewer() {
 
   const handleChooseOption = useCallback(
     (e) => {
-      console.log(e.target.id)
+      console.log("handleChooseOption, e.target.id: ", e.target.id)
 
       if (currentCard.type === QUESTION_TRUE_FALSE) {
         // for true/false, only one answer allowed
@@ -109,10 +147,12 @@ export default function Viewer() {
         })
       }
     },
-    [setTrueFalseSelected, currentCard],
+    [currentCard],
   )
 
+  // #####################################
   // ## different question types rendering
+  // #####################################
 
   const OpenQuestionView = useCallback(() => {
     return (
@@ -134,7 +174,8 @@ export default function Viewer() {
             <>
               <Button
                 secondary
-                onClick={handleSubmitAnswerWrong}
+                onClick={handleSubmitAnswer}
+                id="incorrect"
                 style={{ margin: "1rem" }}
                 icon={AiOutlineQuestionCircle}
                 text="I didn't know that!"
@@ -143,7 +184,8 @@ export default function Viewer() {
               <Button
                 type="button"
                 success
-                onClick={handleSubmitAnswerCorrect}
+                onClick={handleSubmitAnswer}
+                id="correct"
                 style={{ margin: "1rem" }}
                 icon={AiOutlineCheckCircle}
                 text="I knew it!"
@@ -153,12 +195,7 @@ export default function Viewer() {
         </div>
       </>
     )
-  }, [
-    answerVisible,
-    currentCard,
-    handleSubmitAnswerWrong,
-    handleSubmitAnswerCorrect,
-  ])
+  }, [answerVisible, currentCard, handleSubmitAnswer])
 
   const TrueFalseView = useCallback(() => {
     // console.log("trueFalseSelected: ", trueFalseSelected)
