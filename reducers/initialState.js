@@ -17,7 +17,7 @@ export const initialQuestionsState = [
     id: 3,
     question: "what is love?",
     type: "multiple",
-    answer: 1,
+    answer: "a",
     options: [
       { id: "a", text: "Baby" },
       { id: "b", text: "Dont" },
