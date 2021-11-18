@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { connect } from "react-redux"
-import { isUserLoggedIn, authUser } from "../utils/auth"
+import { authUser } from "../utils/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
 
@@ -10,11 +10,6 @@ function Login(props) {
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-
-  if (isUserLoggedIn()) {
-    console.log("Login to /")
-    router.push("/")
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -27,6 +22,8 @@ function Login(props) {
       props.successAlert("login success")
       setUsername("")
       setPassword("")
+
+      router.push("/")
     }
   }
 
