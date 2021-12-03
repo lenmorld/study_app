@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-
 import { useRouter } from "next/router"
-
 import { RiMarkdownLine } from "react-icons/ri"
 import { AiOutlineEye, AiOutlineEdit, AiOutlineSave } from "react-icons/ai"
+
+import { QUESTIONS_ADD } from "../constants/questions"
 
 import styles from "./CardForm.module.css"
 import CardFormField from "./CardFormField"
@@ -57,7 +57,7 @@ export default function CardForm() {
     e.preventDefault()
 
     dispatch({
-      type: "questions/add",
+      type: QUESTIONS_ADD,
       payload: {
         question,
         type: "open",

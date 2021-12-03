@@ -1,0 +1,13 @@
+.alert {
+    width: 100%;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: green;
+}
+
+.alert-error {
+    color: red;
+}

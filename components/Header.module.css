@@ -37,3 +37,7 @@
 .nav ul li:first-child {
     margin: 0;
 }
+
+.nav ul li a, .nav ul li button {
+    cursor: pointer;
+}

@@ -1,5 +1,7 @@
 import { initialQuestionsState } from "./initialState"
 
+import { QUESTIONS_ADD, QUESTIONS_LOAD } from "../constants/questions"
+
 const nextId = (list) => {
   let highest = list.length + 1
   list.forEach((item) => {
@@ -15,11 +17,11 @@ export default function questionsReducer(
   action,
 ) {
   switch (action.type) {
-    case "questions/load": {
+    case QUESTIONS_LOAD: {
       return action.payload
     }
 
-    case "questions/add": {
+    case QUESTIONS_ADD: {
       const { question, type, answer, tags } = action.payload
 
       return [
