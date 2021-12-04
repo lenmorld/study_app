@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { authUser } from "../services/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
+import { blahSample, blahThunk } from "../actions/auth"
 
 function Login({ 
   // state
@@ -13,6 +14,9 @@ function Login({
   // actions
   errorAlert,
   successAlert,
+  blahSample,
+  blahThunk
+ }) {
   const router = useRouter()
 
   const [username, setUsername] = useState("")
@@ -20,6 +24,10 @@ function Login({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    blahSample("message sync")
+    blahThunk("message async")
+
     const resp = await authUser(username, password)
     if (!resp.auth) {
       // alert("WRONG!")
@@ -45,6 +53,7 @@ function Login({
   return (
     <div>
       <h1>Login</h1>
+      <h2>Blah -> {auth.blah}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           Username
@@ -65,8 +74,11 @@ function Login({
 }
 
 function mapStateToProps(state) {
+  console.log("state: ", state)
+
   return {
     alert: state.alert,
+    auth: state.auth,
   }
 }
 
@@ -74,11 +86,17 @@ function mapStateToProps(state) {
 // const mapDispatchToProps = (dispatch) => ({
 //   successAlert: (message) => dispatch(successAlert(message)),
 //   errorAlert: (message) => dispatch(errorAlert(message)),
+//   blahSample: (message) => dispatch(blahSample(message)),
+//   blahThunk: (message) => dispatch(blahThunk(message)),
+  // blahSample,
 // })
+
 // optionally, mapDispatchToProps object
 const mapDispatchToProps = {
   successAlert,
   errorAlert,
+  blahSample,
+  blahThunk
 }
 
 const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login)
