@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { connect } from "react-redux"
 import { authUser } from "../utils/auth"
+import { login } from "../actions/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
 
@@ -11,20 +12,29 @@ function Login(props) {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    const resp = await authUser(username, password)
-    if (!resp.auth) {
-      // alert("WRONG!")
-      props.errorAlert("incorrect username or password")
-    } else {
-      // alert("SUCCESS!")
-      props.successAlert("login success")
-      setUsername("")
-      setPassword("")
 
-      router.push("/")
-    }
+    props.login(username, setUsername, router)
+
+    /*
+      FIXME: instead of calling service (authUser) here directly
+      put it in an action, and that action can call the service
+      and dispatch the success/failure
+    */
+
+    // const resp = await authUser(username, password)
+    // if (!resp.auth) {
+    //   // alert("WRONG!")
+    //   props.errorAlert("incorrect username or password")
+    // } else {
+    //   // alert("SUCCESS!")
+    //   props.successAlert("login success")
+    //   setUsername("")
+    //   setPassword("")
+
+    //   router.push("/")
+    // }
   }
 
   const handleChangeUsername = (e) => {
@@ -67,6 +77,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => ({
   successAlert: (message) => dispatch(successAlert(message)),
   errorAlert: (message) => dispatch(errorAlert(message)),
+  // NOTE: different pattern, put dispatch in action creator
+  login,
 })
 
 const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login)
