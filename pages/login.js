@@ -5,7 +5,14 @@ import { authUser } from "../services/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
 
-function Login(props) {
+function Login({ 
+  // state
+  alert,
+  auth,
+
+  // actions
+  errorAlert,
+  successAlert,
   const router = useRouter()
 
   const [username, setUsername] = useState("")
@@ -16,10 +23,10 @@ function Login(props) {
     const resp = await authUser(username, password)
     if (!resp.auth) {
       // alert("WRONG!")
-      props.errorAlert("incorrect username or password")
+      errorAlert("incorrect username or password")
     } else {
       // alert("SUCCESS!")
-      props.successAlert("login success")
+      successAlert("login success")
       setUsername("")
       setPassword("")
 
@@ -64,10 +71,15 @@ function mapStateToProps(state) {
 }
 
 // const actionCreators = {}
-const mapDispatchToProps = (dispatch) => ({
-  successAlert: (message) => dispatch(successAlert(message)),
-  errorAlert: (message) => dispatch(errorAlert(message)),
-})
+// const mapDispatchToProps = (dispatch) => ({
+//   successAlert: (message) => dispatch(successAlert(message)),
+//   errorAlert: (message) => dispatch(errorAlert(message)),
+// })
+// optionally, mapDispatchToProps object
+const mapDispatchToProps = {
+  successAlert,
+  errorAlert,
+}
 
 const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login)
 
