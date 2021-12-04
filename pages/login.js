@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { connect } from "react-redux"
-import { authUser } from "../utils/auth"
+import { authUser } from "../services/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
 
