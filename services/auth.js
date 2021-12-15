@@ -36,5 +36,6 @@ export async function authUser(username, password) {
 
   return {
     auth: false,
+    message: "Login failed: incorrect username or password",
   }
 }

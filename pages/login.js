@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { connect } from "react-redux"
-import { authUser } from "../services/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
-import { blahSample, blahThunk } from "../actions/auth"
+// moved login to action, which calls the service
+// import { authUser } from "../services/auth"
+import { login } from "../actions/auth"
 
-function Login({ 
+function Login({
   // state
   alert,
   auth,
@@ -14,9 +15,10 @@ function Login({
   // actions
   errorAlert,
   successAlert,
-  blahSample,
-  blahThunk
- }) {
+
+  // auth
+  loginAction,
+}) {
   const router = useRouter()
 
   const [username, setUsername] = useState("")
@@ -25,21 +27,9 @@ function Login({
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    blahSample("message sync")
-    blahThunk("message async")
+    const successRedirect = () => router.push("/")
 
-    const resp = await authUser(username, password)
-    if (!resp.auth) {
-      // alert("WRONG!")
-      errorAlert("incorrect username or password")
-    } else {
-      // alert("SUCCESS!")
-      successAlert("login success")
-      setUsername("")
-      setPassword("")
-
-      router.push("/")
-    }
+    loginAction(username, password, successRedirect)
   }
 
   const handleChangeUsername = (e) => {
@@ -53,7 +43,6 @@ function Login({
   return (
     <div>
       <h1>Login</h1>
-      <h2>Blah -> {auth.blah}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           Username
@@ -88,15 +77,14 @@ function mapStateToProps(state) {
 //   errorAlert: (message) => dispatch(errorAlert(message)),
 //   blahSample: (message) => dispatch(blahSample(message)),
 //   blahThunk: (message) => dispatch(blahThunk(message)),
-  // blahSample,
+// blahSample,
 // })
 
 // optionally, mapDispatchToProps object
 const mapDispatchToProps = {
   successAlert,
   errorAlert,
-  blahSample,
-  blahThunk
+  loginAction: login,
 }
 
 const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login)
