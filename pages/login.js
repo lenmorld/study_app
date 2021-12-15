@@ -1,11 +1,22 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import { connect } from "react-redux"
-import { authUser } from "../utils/auth"
+import { authUser } from "../services/auth"
 
 import { successAlert, errorAlert } from "../actions/alerts"
+import { blahSample, blahThunk } from "../actions/auth"
 
-function Login(props) {
+function Login({ 
+  // state
+  alert,
+  auth,
+
+  // actions
+  errorAlert,
+  successAlert,
+  blahSample,
+  blahThunk
+ }) {
   const router = useRouter()
 
   const [username, setUsername] = useState("")
@@ -13,13 +24,17 @@ function Login(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    blahSample("message sync")
+    blahThunk("message async")
+
     const resp = await authUser(username, password)
     if (!resp.auth) {
       // alert("WRONG!")
-      props.errorAlert("incorrect username or password")
+      errorAlert("incorrect username or password")
     } else {
       // alert("SUCCESS!")
-      props.successAlert("login success")
+      successAlert("login success")
       setUsername("")
       setPassword("")
 
@@ -38,6 +53,7 @@ function Login(props) {
   return (
     <div>
       <h1>Login</h1>
+      <h2>Blah -> {auth.blah}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           Username
@@ -58,16 +74,30 @@ function Login(props) {
 }
 
 function mapStateToProps(state) {
+  console.log("state: ", state)
+
   return {
     alert: state.alert,
+    auth: state.auth,
   }
 }
 
 // const actionCreators = {}
-const mapDispatchToProps = (dispatch) => ({
-  successAlert: (message) => dispatch(successAlert(message)),
-  errorAlert: (message) => dispatch(errorAlert(message)),
-})
+// const mapDispatchToProps = (dispatch) => ({
+//   successAlert: (message) => dispatch(successAlert(message)),
+//   errorAlert: (message) => dispatch(errorAlert(message)),
+//   blahSample: (message) => dispatch(blahSample(message)),
+//   blahThunk: (message) => dispatch(blahThunk(message)),
+  // blahSample,
+// })
+
+// optionally, mapDispatchToProps object
+const mapDispatchToProps = {
+  successAlert,
+  errorAlert,
+  blahSample,
+  blahThunk
+}
 
 const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login)
 

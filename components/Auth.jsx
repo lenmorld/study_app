@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/router"
-import { isUserLoggedIn } from "../utils/auth"
+import { isUserLoggedIn } from "../services/auth"
 import { clearAlert } from "../actions/alerts"
 
 export default function Auth({ children }) {

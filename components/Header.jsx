@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 
 import styles from "./Header.module.css"
 
-import { logout } from "../utils/auth"
+import { logout } from "../services/auth"
 
 export default function Header() {
   const router = useRouter()
