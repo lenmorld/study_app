@@ -1,0 +1,23 @@
+.field {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.field input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    outline: none;
+
+    border: 1px solid #dddddd;
+    background: #eeeeee;
+
+    border-radius: 5px;
+
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.field input:focus {
+    border-color: #008000;
+    background: #ffffff;;
+}

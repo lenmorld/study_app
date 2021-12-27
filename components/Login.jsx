@@ -1,6 +1,9 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
+import Link from "next/link"
 import { connect } from "react-redux"
+
+import styles from "./Login.module.css"
 
 import { successAlert, errorAlert } from "../actions/alerts"
 // moved login to action, which calls the service
@@ -8,6 +11,8 @@ import { successAlert, errorAlert } from "../actions/alerts"
 import { login } from "../actions/auth"
 
 import TextInput from "./atoms/TextInput"
+
+import Button from "./atoms/Button"
 
 function Login({
   // state
@@ -43,7 +48,7 @@ function Login({
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <TextInput
@@ -58,7 +63,19 @@ function Login({
           onChange={handleChangePassword}
           value={password}
         />
-        <button type="submit">Login</button>
+        <Button size="medium" type="submit" success style={{ width: "100%" }}>
+          Login
+        </Button>
+        <p>
+          <Link href="/forgot-password">
+            <a>Forgot password?</a>
+          </Link>
+        </p>
+        <p>
+          <Link href="/signup">
+            <a>No account yet? Sign up</a>
+          </Link>
+        </p>
       </form>
     </div>
   )
