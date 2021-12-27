@@ -4,6 +4,10 @@ import { useRouter } from "next/router"
 import { isUserLoggedIn } from "../services/auth"
 import { clearAlert } from "../actions/alerts"
 
+const ROUTES_NOT_TO_LOGIN = ["/forgot-password", "/signup"]
+
+// TODO make this an effect
+
 export default function Auth({ children }) {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -53,7 +57,8 @@ export default function Auth({ children }) {
     typeof window !== "undefined" &&
     !isUserLoggedIn() &&
     router &&
-    !router.asPath.includes("login")
+    !router.asPath.includes("login") &&
+    !ROUTES_NOT_TO_LOGIN.includes(router.pathname)
   ) {
     console.log("/ to /login")
     router.push("/login")
