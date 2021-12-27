@@ -1,5 +1,8 @@
-import { authUser } from "../services/auth"
-import { LOGIN_FAILURE, LOGIN_SUCCESS } from "../constants/auth"
+import {
+  login as loginService,
+  logout as logoutService,
+} from "../services/auth"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT } from "../constants/auth"
 
 import { errorAlert } from "./alerts"
 
@@ -18,16 +21,24 @@ export const blahThunk = (message) => (dispatch) => {
 
 export const login =
   (username, password, successRedirect) => async (dispatch) => {
-    const result = await authUser(username, password)
+    const result = await loginService(username, password)
 
     if (result.auth) {
       dispatch({ type: LOGIN_SUCCESS })
       successRedirect()
     } else {
       dispatch({ type: LOGIN_FAILURE, payload: result.message })
-      //   dispatch(errorAlert("incorrect username or password"))
       dispatch(errorAlert(result.message))
     }
-
-    // TODO: real error handling
   }
+
+export const logout = (successRedirect) => {
+  logoutService()
+
+  successRedirect()
+
+  return { type: LOGOUT }
+
+  // FIXME: delete entire localStorage on logout as well,
+  // if this is user-based
+}

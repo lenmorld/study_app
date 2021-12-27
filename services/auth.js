@@ -17,7 +17,7 @@ export function logout() {
   so that when change route, clear alerts
 */
 
-export async function authUser(username, password) {
+export async function login(username, password) {
   // TODO: call API route/service to login
   if (username === "lenny" && password === "abcd12345") {
     if (typeof window !== "undefined") {
